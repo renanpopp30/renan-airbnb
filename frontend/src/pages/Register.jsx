@@ -10,19 +10,20 @@ const Register = ({ setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      return alert("Preecha E-mail e Senha");
+    if (!name || !email || !password) {
+      return alert("Preecha Nome, E-mail e Senha");
     }
     try {
-      const { data: userDoc } = await axios.post("/users/login", {
+      const { data: userDoc } = await axios.post("/users", {
+        name,
         email,
         password,
       });
-      setUser(userDoc)
-      alert("Login Efetuado com sucesso !!");
+      setUser(userDoc) // se eu quiser que va para a tela de login eu tiro esse setUser e redireciono para o login
+      alert("Cadastro Efetuado com sucesso !!");
       setRedirect(true)
     } catch (error) {
-      alert(`Erro ao logar: ${error.response.data}`);
+      alert(`Erro ao cadastrar: ${JSON.stringify(error)}`);
     }
   };
 
@@ -62,7 +63,7 @@ const Register = ({ setUser }) => {
           />
 
           <button className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 font-bold text-white shadow-lg">
-            Login
+            Cadastrar-se
           </button>
         </form>
         <p>
