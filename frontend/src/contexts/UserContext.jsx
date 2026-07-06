@@ -10,7 +10,8 @@ export const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const axiosGet = async () => {
-      const { data } = await axios.get("/users/profile");
+      const { data, error } = await axios.get("/users/profile");
+      if (error) return console.log(error)
       setUser(data);
     };
     axiosGet();
