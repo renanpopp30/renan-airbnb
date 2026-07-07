@@ -1,7 +1,6 @@
-import { useState } from "react";
+import React from "react";
 
-export const Perks = () => {
-  const [perks, setPerks] = useState([]);
+export const Perks = ({ perks, setPerks }) => {
   const handleClick = (target) => {
     const newPerks = target.checked
       ? [...perks, target.value]
