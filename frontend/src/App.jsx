@@ -26,7 +26,7 @@ function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route
-            path="/account/:subpage/:action?"
+            path="/account/:subpage/:action?/:id?"
             element={<Account />}
           />
         </Routes>

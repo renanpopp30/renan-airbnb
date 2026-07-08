@@ -9,11 +9,13 @@ import { __dirname } from "../../server.js";
 const { S3_SECRET_KEY, S3_ACCESS_KEY, BUCKET } = process.env
 
 const getExtension = (path) => {
-    const mimeType = mime.lookup(path);
+    const cleanLink = path.split("?")[0];
+
+    const mimeType = mime.lookup(cleanLink);
     const contentType = mime.contentType(mimeType)
     const extension = mime.extension(contentType)
 
-    return extension;
+    return { extension, mimeType };
 }
 
 export const sendToS3 = async (filename, path, mimetype) => {
@@ -45,7 +47,7 @@ export const sendToS3 = async (filename, path, mimetype) => {
 }
 // -- ImageDownloader -- //
 export const downloadImage = async (link) => {
-    const extension = getExtension(link)
+    const { extension, mimeType} = getExtension(link)
     const destination = `${__dirname}/tmp/`
 
     const filename = `${Date.now()}.${extension}`;
@@ -75,7 +77,9 @@ export const uploadImage = () => {
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Math.round(Math.random() * 1E9)
-            const extension = getExtension(file.originalname)
+            
+            const { extension } = getExtension(file.originalname)
+            console.log(extension)
             cb(null, `${Date.now()}-${uniqueSuffix}.${extension}`)
         }
     })
