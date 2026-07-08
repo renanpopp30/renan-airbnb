@@ -5,13 +5,36 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
   const uploadByLink = async (e) => {
     e.preventDefault();
     if (photoLink) {
-      const { data: filename } = await axios.post("/places/upload/link", {
-        link: photoLink,
-      });
-      setPhotos((prevValue) => [...prevValue, filename]);
+      try {
+        const { data: filename } = await axios.post("/places/upload/link", {
+          link: photoLink,
+        });
+        setPhotos((prevValue) => [...prevValue, filename]);
+      } catch (error) {
+        alert("Deu erro no upload do link da imagem");
+      }
     } else {
       alert("Não existe nenhum link a ser enviado!");
     }
+  };
+
+  const uploadPhoto = async (e) => {
+    const { files } = e.target;
+    const filesArray = [...files];
+    const formData = new FormData();
+
+    filesArray.forEach((file) => formData.append("files", file));
+
+    try {
+      const { data: urlArray } = await axios.post("/places/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setPhotos((prevValue) => [...prevValue, ...urlArray]);
+    } catch (error) {
+      alert("Deu erro no upload da imagem");
+    }
+    
   };
 
   return (
@@ -42,7 +65,7 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
         {photos.map((photo) => (
           <img
             key={photo}
-            src={`${axios.defaults.baseURL}/tmp/${photo}`}
+            src={`${photo}`}
             alt="Imagens do Lugar"
             className="aspect-square rounded-2xl object-cover"
           />
@@ -52,7 +75,13 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
           htmlFor="file"
           className="flex aspect-square cursor-pointer items-center justify-center gap-2 rounded-2xl border border-gray-300 bg-gray-100"
         >
-          <input type="file" id="file" className="hidden" />
+          <input
+            type="file"
+            id="file"
+            className="hidden"
+            onChange={uploadPhoto}
+            multiple
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
