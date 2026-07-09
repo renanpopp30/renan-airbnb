@@ -21,10 +21,7 @@ const Home = () => {
       <div className="mx-auto grid max-w-7xl grid-cols-[repeat(auto-fit,minmax(225px,1fr))] gap-8 p-8">
         {places.map((place) => (
           <Item {...{ place }} key={place._id} />
-        ))}
-        {places.map((place) => (
-          <Item {...{ place }} key={place._id} />
-        ))}       
+        ))}      
       </div>
     </section>
   );
