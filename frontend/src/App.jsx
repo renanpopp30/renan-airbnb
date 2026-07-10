@@ -8,12 +8,14 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Place from "./pages/Place";
 
-axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASE_URL;
+axios.defaults.baseURL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:3000/api"
+    : "http://localhost:3000/api";
 axios.defaults.withCredentials = true;
 // Rodar no terminal para fazer a parte das rotas
 // npm i react-router-dom
 function App() {
-  
   return (
     <UserContextProvider>
       <BrowserRouter>
@@ -21,17 +23,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/account/:subpage/:action?/:id?"
-            element={<Account />}
-          />
+          <Route path="/account/:subpage/:action?/:id?" element={<Account />} />
           <Route path="/place/:id" element={<Place />} />
-          
         </Routes>
       </BrowserRouter>
     </UserContextProvider>
