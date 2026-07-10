@@ -11,7 +11,7 @@ import Place from "./pages/Place";
 axios.defaults.baseURL =
   import.meta.env.MODE === "development"
     ? "http://localhost:3000/api"
-    : "http://localhost:3000/api";
+    : "https://renan-airbnb.onrender.com/api";
 axios.defaults.withCredentials = true;
 // Rodar no terminal para fazer a parte das rotas
 // npm i react-router-dom
